@@ -1,22 +1,21 @@
 import { createStore, combineReducers, applyMiddleware } from 'redux';
 import createSagaMiddleware from 'redux-saga';
-import { all } from 'redux-saga/effects';
 
 import counterReducer from '../features/counter/reducers';
-import { watchIncrementAsync, watchAddAsync } from '../features/counter/sagas';
+import HomeReducer from '../features/HomeScreen/Home.reducer';
+import GameReducer from '../features/GameScreen/Game.reducer';
+import rootSaga from './sagas';
+
+export type IRootState = ReturnType<typeof store.getState>;
+export type IAppDispatch = typeof store.dispatch;
 
 const sagaMiddleware = createSagaMiddleware()
 
 const rootReducer = combineReducers({
-    counter: counterReducer
-})
-
-export default function* rootSaga() {
-    yield all([
-        watchIncrementAsync(),
-        watchAddAsync()
-    ])
-}
+  counter: counterReducer,
+  home: HomeReducer,
+  game: GameReducer,
+});
 
 const middlewares = applyMiddleware(sagaMiddleware)
 

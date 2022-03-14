@@ -1,10 +1,10 @@
 import {INCREMENT, DECREMENT, ADD_AMOUNT} from './actions';
-import {SystemState, IActionCounter} from './types';
+import { SystemState, IActionCounter } from './types';
 
 const counterReducer = (
     state: SystemState = {
         value: 3
-    }, 
+    },
     action: IActionCounter
 ) => {
     switch (action.type) {

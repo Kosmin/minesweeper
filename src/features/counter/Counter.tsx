@@ -2,11 +2,11 @@ import React, { useState } from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import {
     INCREMENT,
-    INCREMENT_ASYNC, 
-    DECREMENT, 
-    ADD_AMOUNT_ASYNC, 
+    INCREMENT_ASYNC,
+    DECREMENT,
+    ADD_AMOUNT_ASYNC,
     addAmount} from './actions';
-import {selectValue} from './selectors'
+import { selectValue } from './selectors'
 import styles from './Counter.module.css';
 
 export const Counter = () => {
