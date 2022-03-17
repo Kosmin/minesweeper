@@ -1,4 +1,4 @@
-import React, { memo, useState } from 'react';
+import React, { memo, useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
@@ -33,6 +33,8 @@ export const HomeScreen = memo(() => {
     setLevel(parseInt(event.target.value, 10));
   };
 
+  useEffect(() => setTempUserName(userName), [])
+
   return (
     <Container maxWidth="sm">
       <Typography variant="h5" noWrap component="div" sx={{ mt: 3, textAlign: 'center' }}>
@@ -42,7 +44,7 @@ export const HomeScreen = memo(() => {
         Please enter your name to start playing:
       </Typography>
       <Box component="form" noValidate autoComplete="off" sx={{ textAlign: 'center' }}>
-        <TextField id="outlined-basic" label="Your name" variant="outlined" sx={{ mt: 3, width: "40%" }} value={tempUserName || userName} onChange={nameChanged} /><br/>
+        <TextField id="outlined-basic" label="Your name" variant="outlined" sx={{ mt: 3, width: "40%" }} value={tempUserName} onChange={nameChanged} /><br/>
         <FormControl sx={{ my: 2, width: "40%" }}>
           <InputLabel id="level-label">Level</InputLabel>
           <Select
@@ -70,3 +72,5 @@ export const HomeScreen = memo(() => {
     </Container>
   )
 });
+
+export default HomeScreen;

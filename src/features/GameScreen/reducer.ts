@@ -1,4 +1,4 @@
-import { ICoordinates, IFlagCoordinates, IGameAction, IGameState, IMapAction, IMapLayout } from './types';
+import { IFlagCoordinates, IGameAction, IGameState, IMapAction, IMapLayout } from './types';
 import * as SI from 'seamless-immutable';
 import { IGenericAction } from '../../app/types';
 import { INCREMENT_LOSSES, INCREMENT_WINS, SET_MAP, SET_STATUS } from './actions';

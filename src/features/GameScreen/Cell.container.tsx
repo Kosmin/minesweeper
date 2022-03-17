@@ -22,7 +22,7 @@ export const Cell = memo(({
   // Clear marks on game restart
   useEffect(() => {
     // When cell content is reset, also reset the flag status
-    if(content == '□') {
+    if(content === '□') {
       setMarkedAsMine(false);
     }
   }, [content]);
@@ -30,14 +30,14 @@ export const Cell = memo(({
   // This can be further optimized
   useEffect(() => {
     // When cell content is reset, also reset the flag status
-    if(status == 'lost' || status == 'won') {
+    if(status === 'lost' || status === 'won') {
       setMarkedAsMine(false);
     }
   }, [status]);
 
   const handleRightClick = (event: React.MouseEvent) => {
     // Don't allow flags on already discovered cells
-    if (content == '□') {
+    if (content === '□') {
       setMarkedAsMine(!markedAsMine);
       event.preventDefault();
       event.stopPropagation();
@@ -56,18 +56,18 @@ export const Cell = memo(({
       <CellBox
         onClick={handleClick}
         onContextMenu={handleRightClick}
-        className={(content == '□') ? 'closed' : 'open' }
+        className={(content === '□') ? 'closed' : 'open' }
       >
-         {content == '*' && (
+         {content === '*' && (
           <LocalFireDepartmentIcon fontSize="small" sx={{color: 'orange'}}/>
         )}
 
         {/* Ensure we don't keep poorly placed flags, if the board discovers 0 in that spot */}
-        {markedAsMine && content == '□' && (
+        {markedAsMine && content === '□' && (
           <GolfCourseIcon fontSize="small" sx={{color: 'red'}} />
         )}
 
-        {!markedAsMine && content != '□' && content != '0' && (content)}
+        {!markedAsMine && content !== '□' && content !== '0' && (content)}
       </CellBox>
     )
   } else {

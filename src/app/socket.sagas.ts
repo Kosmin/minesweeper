@@ -1,8 +1,5 @@
 import { eventChannel } from "redux-saga";
-import { call, put, select, take, takeEvery } from "redux-saga/effects";
-import { incrementLosses, incrementWins, setMap, setStatus } from "../features/GameScreen/actions";
-import { mapLayoutSelector } from "../features/GameScreen/selectors";
-import { history } from "../lib/history";
+import { call, put, take } from "redux-saga/effects";
 import { IActionName, IGenericAction, ISaga, ISocketEventAction } from "./types";
 
 export const SOCKET_URL = "ws://hometask.eg1236.com/game1/";
@@ -92,7 +89,7 @@ export function* initSocketChannel(): any {
 
   while (true) {
     const action = yield take(channel);
-    const result = yield call(onSocketEvent, action);
+    yield call(onSocketEvent, action);
   }
 }
 

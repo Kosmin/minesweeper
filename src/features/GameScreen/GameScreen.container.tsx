@@ -1,5 +1,4 @@
 import React, { memo } from 'react';
-import { ImmutableArray } from 'seamless-immutable';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
@@ -8,7 +7,7 @@ import { Cell } from './Cell.container';
 import Typography from '@mui/material/Typography';
 import { levelNameSelector, userNameSelector } from '../HomeScreen/selectors';
 import { restartGame } from './actions';
-import { IMapLayoutRow, IRecord } from './types';
+import { IRecord } from './types';
 import { BoardContainer } from './components/BoardContainer';
 
 export const GameScreen = memo(() => {

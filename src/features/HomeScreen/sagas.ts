@@ -1,4 +1,3 @@
-import React from 'react';
 import { put, select, takeEvery } from 'redux-saga/effects'
 import { ISaga, IUserStartGameAction } from './types';
 import {

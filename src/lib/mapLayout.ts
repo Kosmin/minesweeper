@@ -8,7 +8,7 @@ export function getLayoutFromString(layoutString: string) {
 
   newLayoutArray.forEach((row, rowIndex) => {
     (newLayout as IMapLayout)[rowIndex.toString()] = {}
-    row.map((content, colIndex) => {
+    row.forEach((content, colIndex) => {
       (newLayout as IMapLayout)[rowIndex.toString()][colIndex.toString()] = content;
     });
   })

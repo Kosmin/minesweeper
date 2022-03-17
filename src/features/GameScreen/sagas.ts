@@ -13,7 +13,7 @@ import { IMineCheckAction } from "./types";
 export function* updateMap({ payload }: ISocketEventAction): ISaga {
   // Interpret socket messages
   if (payload.data) {
-    if (payload.data == 'new: OK') {
+    if (payload.data === 'new: OK') {
       yield socketSend("map");
     } else if(payload.data.startsWith("open: You lose")) {
       yield put(setStatus('lost'));
@@ -37,7 +37,7 @@ export function* updateMap({ payload }: ISocketEventAction): ISaga {
 
 export function* mineCheckAsync(action: IMineCheckAction): ISaga {
   const status = yield select(gameStatusSelector);
-  if(status == 'started') {
+  if(status === 'started') {
     yield socketSend(`open ${action.payload.col} ${action.payload.row}`);
     yield socketSend(`map`);
   }
