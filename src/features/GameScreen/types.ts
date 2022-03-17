@@ -9,8 +9,8 @@ export interface IGameState {
   losses: number;
 }
 export interface ICoordinates {
-  x: number;
-  y: number;
+  row: number;
+  col: number;
 }
 
 export interface IRecord {
@@ -27,8 +27,8 @@ export interface IMineCheckAction extends IGameAction {
 }
 
 export interface ICellBoxProps {
-  x: number;
-  y: number;
+  row: number;
+  col: number;
   key?: string;
   onClick?: React.MouseEventHandler<HTMLButtonElement>;
 }

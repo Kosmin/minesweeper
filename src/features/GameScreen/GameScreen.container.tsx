@@ -60,9 +60,13 @@ export const GameScreen = memo(() => {
       </Box>
       <Box sx={{ display: 'flex', justifyContent: 'center', mt: 5 }}>
         <BoardContainer width={containerWidth} height={containerHeight} columns={cols} rows={rows}>
-          {(mapLayout.length > 0 && mapLayout.map((row: ImmutableArray<string>, y: number) => row.map((_, x: number) => (
-            <Cell x={x} y={y} key={`cell_${x}_${y}`} />
-          ))))}
+          {(mapLayout.length > 0 && mapLayout.map(
+            (rowContent: ImmutableArray<string>, row: number) => (
+              rowContent.map((_, col: number) => (
+                <Cell row={row} col={col} key={`cell_${row}_${col}`} />
+              ))
+            ))
+          )}
         </BoardContainer>
       </Box>
     </>

@@ -22,7 +22,7 @@ describe("GameScreen Actions", () => {
     expect(actions.setStatus('lost')).toEqual({type: 'GAME/SET_STATUS', payload: 'lost'})
   });
   it('mineCheck', () => {
-    const payload = {x: 0, y: 1};
+    const payload = {row: 0, col: 1};
     expect(actions.mineCheck(payload)).toEqual({type: 'GAME/MINE_CHECK', payload })
   });
 });

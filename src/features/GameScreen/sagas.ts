@@ -36,7 +36,7 @@ export function* updateMap({ payload }: ISocketEventAction): ISaga {
 }
 
 export function* mineCheckAsync(action: IMineCheckAction): ISaga {
-  yield socketSend(`open ${action.payload.x} ${action.payload.y}`);
+  yield socketSend(`open ${action.payload.col} ${action.payload.row}`);
   yield socketSend(`map`);
 }
 

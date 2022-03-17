@@ -10,14 +10,14 @@ import { ICellBoxProps } from './types';
 
 export const Cell = memo(({
   // x & y are coordinates on the map, not array positions
-  x, y
+  row, col
 }: ICellBoxProps) => {
   const mapLayout = useAppSelector(mapLayoutSelector);
   const status = useAppSelector(gameStatusSelector);
   const level = useAppSelector(levelSelector);
   const [markedAsMine, setMarkedAsMine] = useState(false);
   const dispatch = useAppDispatch();
-  const checkForMine = () => dispatch(mineCheck({ x, y }));
+  const checkForMine = () => dispatch(mineCheck({ row, col }));
 
   // Clear marks on game restart
   useEffect(() => {
@@ -25,7 +25,7 @@ export const Cell = memo(({
   }, [status]);
 
   const handleRightClick = (event: React.MouseEvent) => {
-    if (status != 'won' && status != 'lost' && mapLayout[y][x] == '□') {
+    if (status != 'won' && status != 'lost' && mapLayout[row][col] == '□') {
       setMarkedAsMine(!markedAsMine);
       event.preventDefault();
       event.stopPropagation();
@@ -41,24 +41,24 @@ export const Cell = memo(({
   }
 
   // Avoid breaking the screen if there are any socket errors in the data
-  if (mapLayout && mapLayout[y] && mapLayout[y][x]) {
+  if (mapLayout && mapLayout[row] && mapLayout[row][col]) {
     return (
       <CellBox
         onClick={handleClick}
         onContextMenu={handleRightClick}
-        className={(mapLayout[y][x] == '□') ? 'closed' : 'open' }
+        className={(mapLayout[row][col] == '□') ? 'closed' : 'open' }
       >
-         {mapLayout[y][x] == '*' && (
+         {mapLayout[row][col] == '*' && (
           <LocalFireDepartmentIcon fontSize="small" sx={{color: 'orange'}}/>
         )}
 
         {/* Ensure we don't keep poorly placed flags, if the board discovers 0 in that spot */}
-        {markedAsMine && mapLayout[y][x] == '□' && (
+        {markedAsMine && mapLayout[row][col] == '□' && (
           <GolfCourseIcon fontSize="small" sx={{color: 'red'}} />
         )}
 
-        {!markedAsMine && mapLayout[y][x] != '□' && mapLayout[y][x] != '0' && (
-          mapLayout[y][x]
+        {!markedAsMine && mapLayout[row][col] != '□' && mapLayout[row][col] != '0' && (
+          mapLayout[row][col]
         )}
       </CellBox>
     )
