@@ -61,7 +61,7 @@ export function* socketOpen(): ISaga {
 
   const mapLayout: any = yield select(mapLayoutSelector);
   // Auto-navigate if not first page load
-  if (mapLayout && mapLayout.length > 0) {
+  if (mapLayout && Object.keys(mapLayout).length > 0) {
     history.push('/game');
   }
 }

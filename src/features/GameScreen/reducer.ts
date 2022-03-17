@@ -1,10 +1,11 @@
-import { IGameState } from './types';
+import { ICoordinates, IFlagCoordinates, IGameAction, IGameState, IMapAction, IMapLayout } from './types';
 import * as SI from 'seamless-immutable';
 import { IGenericAction } from '../../app/types';
 import { INCREMENT_LOSSES, INCREMENT_WINS, SET_MAP, SET_STATUS } from './actions';
 
 export const INITIAL_STATE: SI.Immutable<IGameState> = SI.from({
-  mapLayout: [],
+  mapLayout: {} as IMapLayout,
+  flags: {} as IFlagCoordinates,
   status: 'started',
   wins: 0,
   losses: 0,
@@ -12,11 +13,11 @@ export const INITIAL_STATE: SI.Immutable<IGameState> = SI.from({
 
 const GameReducer = (
   state: SI.Immutable<IGameState> = INITIAL_STATE,
-  action: IGenericAction | {}
+  action: IGameAction | IMapAction
 ) => {
-  switch ((action as IGenericAction).type) {
+  switch ((action as IMapAction).type) {
     case SET_MAP:
-      return state.set("mapLayout", (action as IGenericAction).payload)
+      return state.merge({mapLayout: action.payload as IMapLayout}, {deep: true});
     case SET_STATUS:
       return state.set("status", (action as IGenericAction).payload)
     case INCREMENT_WINS:

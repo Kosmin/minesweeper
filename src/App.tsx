@@ -109,7 +109,7 @@ export const App = memo(() => {
         </AppBar>
         <Switch>
           <Route exact path="/"><HomeScreen /></Route>
-          {(!mapLayout || mapLayout.length <= 0) && (
+          {(!mapLayout || Object.keys(mapLayout).length <= 0) && (
             <Redirect to='/' />
           )}
           <Route path="/game"><GameScreen /></Route>

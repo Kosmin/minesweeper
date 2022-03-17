@@ -1,6 +1,6 @@
 import * as selectors from '../selectors';
-import { initState, mockState, stateMock } from '../../../app/tests/mocks';
-import { mockMapArray } from './mocks';
+import { initState, mockState } from '../../../app/tests/mocks';
+import { mockMapArray, mockMapLayout } from './mocks';
 
 describe('Home Selectors', () => {
   beforeEach(() => { initState() });
@@ -17,6 +17,21 @@ describe('Home Selectors', () => {
     )).toEqual('lost');
   });
 
-  it('columnSelector returns the number of columns', () => {/* left empty for performance improvements */});
-  it('rowSelector returns the number of rows', () => {/* left empty for performance improvements */});
+  it('colNumberSelector returns the number of columns', () => {
+    expect(selectors.colNumberSelector(mockState({ game: {
+      mapLayout: mockMapLayout
+    }}))).toEqual(10);
+  });
+  it('rowNumberSelector returns the number of rows', () => {
+    expect(selectors.rowNumberSelector(mockState({ game: {
+      mapLayout: mockMapLayout
+    }}))).toEqual(10);
+  });
+  it('flagSelector returns value for given coordinates', () => {
+    expect(selectors.flagSelector(
+      mockState({ game: {
+        flags: {"0,0": true}
+      }})
+    )("0", "0")).toEqual(true);
+  })
 });

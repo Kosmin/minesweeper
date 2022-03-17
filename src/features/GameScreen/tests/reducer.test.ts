@@ -1,22 +1,25 @@
 import GameReducer from '../reducer';
 import * as actions from '../actions';
 import * as SI from 'seamless-immutable';
-import { mockMapArray } from './mocks';
+import { mockMapLayout } from './mocks';
+import { IMapAction } from '../types';
+import { mockState } from './mocks';
 
 describe('GameReducer', () => {
   it('returns the initial state', () => {
-    expect(GameReducer(undefined, {})).toEqual(SI.from({
-      mapLayout: [],
+    expect(GameReducer(undefined, {} as IMapAction)).toEqual(SI.from({
+      mapLayout: {},
       status: 'started',
       wins: 0,
       losses: 0,
+      flags: {}
     }))
   });
-  it('handles SET_MAP', () => {
+  it('handles SET_MAP and sets new mapLayout', () => {
     expect(GameReducer(undefined, {
       type: actions.SET_MAP,
-      payload: mockMapArray
-    }).mapLayout).toEqual(mockMapArray);
+      payload: mockMapLayout
+    }).mapLayout).toEqual(mockMapLayout);
   });
   it('handles SET_STATUS', () => {
     expect(GameReducer(undefined, {

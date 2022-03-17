@@ -1,5 +1,6 @@
 import { IActionName } from "../../app/types";
-import { ICoordinates, IGameAction, IGameStatus } from "./types";
+import { getLayoutFromString } from "../../lib/mapLayout";
+import { ICoordinates, IGameAction, IGameStatus, IMapAction } from "./types";
 
 export const RESTART_GAME: IActionName = 'GAME/RESTART_GAME';
 export const SET_MAP: IActionName = 'GAME/SET_MAP';
@@ -15,9 +16,9 @@ export const restartGame = (): IGameAction => ({
 export const incrementWins = (): IGameAction => ({ type: INCREMENT_WINS });
 export const incrementLosses = (): IGameAction => ({ type: INCREMENT_LOSSES });
 
-export const setMap = (payload: string): IGameAction => ({
+export const setMap = (payload: string): IMapAction => ({
   type: SET_MAP,
-  payload: payload.split('map:')[1].trim().split('\n').map((s) => s.split('')),
+  payload: getLayoutFromString(payload),
 });
 
 export const setStatus = (payload: IGameStatus): IGameAction => ({
@@ -25,9 +26,7 @@ export const setStatus = (payload: IGameStatus): IGameAction => ({
   payload: payload,
 });
 
-export const mineCheck = (payload: ICoordinates): IGameAction => {
-  return {
-    type: MINE_CHECK,
-    payload: payload,
-  }
-};
+export const mineCheck = (payload: ICoordinates): IGameAction => ({
+  type: MINE_CHECK,
+  payload: payload,
+});

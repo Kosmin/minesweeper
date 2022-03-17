@@ -10,7 +10,7 @@ export const initialStateObject: any = {
     level: 4,
   },
   game: {
-    mapLayout: [],
+    mapLayout: {},
     status: 'started',
     wins: 0,
     losses: 0

@@ -4,7 +4,7 @@ import { ISaga, ISocketEventAction } from "../../app/types";
 import { history } from "../../lib/history";
 import { executeRestartGame } from "../HomeScreen/sagas";
 import { incrementLosses, incrementWins, MINE_CHECK, RESTART_GAME, setMap, setStatus } from "./actions";
-import { mapLayoutSelector } from "./selectors";
+import { gameStatusSelector, mapLayoutSelector } from "./selectors";
 import { IMineCheckAction } from "./types";
 
 
@@ -28,7 +28,7 @@ export function* updateMap({ payload }: ISocketEventAction): ISaga {
       yield put( setMap( payload.data ) );
 
       // Auto-navigate on first map load
-      if (!mapLayout || mapLayout.length <= 0) {
+      if (!mapLayout || Object.keys(mapLayout).length <= 0) {
         history.push('/game');
       }
     }
@@ -36,8 +36,11 @@ export function* updateMap({ payload }: ISocketEventAction): ISaga {
 }
 
 export function* mineCheckAsync(action: IMineCheckAction): ISaga {
-  yield socketSend(`open ${action.payload.col} ${action.payload.row}`);
-  yield socketSend(`map`);
+  const status = yield select(gameStatusSelector);
+  if(status == 'started') {
+    yield socketSend(`open ${action.payload.col} ${action.payload.row}`);
+    yield socketSend(`map`);
+  }
 }
 
 export function* watchGameSagas(): ISaga {

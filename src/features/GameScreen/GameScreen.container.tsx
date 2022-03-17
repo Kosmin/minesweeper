@@ -3,18 +3,18 @@ import { ImmutableArray } from 'seamless-immutable';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
-import { columnSelector, gameStatusSelector, mapLayoutSelector, recordSelector, rowSelector } from './selectors';
+import { colNumberSelector, gameStatusSelector, mapLayoutSelector, recordSelector, rowNumberSelector } from './selectors';
 import { Cell } from './Cell.container';
 import Typography from '@mui/material/Typography';
 import { levelNameSelector, userNameSelector } from '../HomeScreen/selectors';
 import { restartGame } from './actions';
-import { IRecord } from './types';
+import { IMapLayoutRow, IRecord } from './types';
 import { BoardContainer } from './components/BoardContainer';
 
 export const GameScreen = memo(() => {
   const mapLayout = useAppSelector(mapLayoutSelector);
-  const cols: number = useAppSelector(columnSelector);
-  const rows: number = useAppSelector(rowSelector);
+  const cols: number = useAppSelector(colNumberSelector);
+  const rows: number = useAppSelector(rowNumberSelector);
   const name: string = useAppSelector(userNameSelector);
   const levelName: string = useAppSelector(levelNameSelector);
   const status: string = useAppSelector(gameStatusSelector);
@@ -60,10 +60,10 @@ export const GameScreen = memo(() => {
       </Box>
       <Box sx={{ display: 'flex', justifyContent: 'center', mt: 5 }}>
         <BoardContainer width={containerWidth} height={containerHeight} columns={cols} rows={rows}>
-          {(mapLayout.length > 0 && mapLayout.map(
-            (rowContent: ImmutableArray<string>, row: number) => (
-              rowContent.map((_, col: number) => (
-                <Cell row={row} col={col} key={`cell_${row}_${col}`} />
+          {(rows > 0 && Object.keys(mapLayout).map(
+            (row: string) => (
+              Object.keys(mapLayout[row]).map((col: string) => (
+                <Cell row={row} col={col} key={`cell_${row}_${col}`} content={mapLayout[row][col]} />
               ))
             ))
           )}
