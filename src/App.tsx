@@ -10,11 +10,9 @@ import MenuItem from '@mui/material/MenuItem';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 
-import { Counter } from './features/counter/Counter';
-import { GameScreen } from './features/GameScreen/GameScreen';
-import logo from './logo.png';
+import { GameScreen } from './features/GameScreen/GameScreen.container';
 import './App.css';
-import { HomeScreen } from './features/HomeScreen/Home';
+import { HomeScreen } from './features/HomeScreen/HomeScreen.container';
 import { ErrorBoundary } from './app/errorBoundary';
 import { useAppSelector } from './app/hooks';
 import { mapLayoutSelector } from './features/GameScreen/selectors';
@@ -110,7 +108,6 @@ export const App = memo(() => {
           </Toolbar>
         </AppBar>
         <Switch>
-          <Route path="/counter"><Counter /></Route>
           <Route exact path="/"><HomeScreen /></Route>
           {(!mapLayout || mapLayout.length <= 0) && (
             <Redirect to='/' />

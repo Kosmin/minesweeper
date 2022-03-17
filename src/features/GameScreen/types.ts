@@ -25,3 +25,10 @@ export interface IGameAction {
 export interface IMineCheckAction extends IGameAction {
   payload: ICoordinates;
 }
+
+export interface ICellBoxProps {
+  x: number;
+  y: number;
+  key?: string;
+  onClick?: React.MouseEventHandler<HTMLButtonElement>;
+}

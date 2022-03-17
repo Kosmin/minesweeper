@@ -1,44 +1,15 @@
 import React, { memo } from 'react';
 import { ImmutableArray } from 'seamless-immutable';
-import styled from '@emotion/styled'
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { columnSelector, gameStatusSelector, mapLayoutSelector, recordSelector, rowSelector } from './selectors';
-import { Cell } from './Cell';
+import { Cell } from './Cell.container';
 import Typography from '@mui/material/Typography';
 import { levelNameSelector, userNameSelector } from '../HomeScreen/selectors';
 import { restartGame } from './actions';
 import { IRecord } from './types';
-
-interface IContainerProps {
-  height?: string | number;
-  width?: string | number;
-  columns: string | number;
-  rows: string | number;
-}
-
-const Container = styled.div<IContainerProps>`
-  backgroundColor: rgb(186, 186, 186);
-  border: 1px solid #999;
-  boxShadow: box-shadow: 0px 5px 3px gray inset;
-  display: grid;
-  grid-template-columns: ${(props: IContainerProps) => `repeat(${props.columns}, 1fr)`};
-  grid-template-rows: ${(props: IContainerProps) => `repeat(${props.rows}, 1fr)`};
-  grid-column-gap: 0px;
-  grid-row-gap: 0px;
-  height: ${(props: any) => props.height ? props.height : '150px'};
-  overflow: auto;
-  width: ${(props: any) => props.width ? props.width : '150px'};
-`;
-
-const Item = styled.div`
-  backgroundColor: rgb(186, 186, 186);
-  border: 2px solid #666;
-  boxShadow: box-shadow: 0px 1px 3px gray inset;
-  height: 8px;
-  width: 8px;
-`;
+import { BoardContainer } from './components/BoardContainer';
 
 export const GameScreen = memo(() => {
   const mapLayout = useAppSelector(mapLayoutSelector);
@@ -88,11 +59,11 @@ export const GameScreen = memo(() => {
         </Button>
       </Box>
       <Box sx={{ display: 'flex', justifyContent: 'center', mt: 5 }}>
-        <Container width={containerWidth} height={containerHeight} columns={cols} rows={rows}>
-          {(mapLayout.length > 0 && mapLayout.map((row: ImmutableArray<string>, y: number) => row.map((cell: string, x: number) => (
+        <BoardContainer width={containerWidth} height={containerHeight} columns={cols} rows={rows}>
+          {(mapLayout.length > 0 && mapLayout.map((row: ImmutableArray<string>, y: number) => row.map((_, x: number) => (
             <Cell x={x} y={y} key={`cell_${x}_${y}`} />
           ))))}
-        </Container>
+        </BoardContainer>
       </Box>
     </>
   )
