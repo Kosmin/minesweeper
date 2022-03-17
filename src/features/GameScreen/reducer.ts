@@ -3,7 +3,7 @@ import * as SI from 'seamless-immutable';
 import { IGenericAction } from '../../app/types';
 import { INCREMENT_LOSSES, INCREMENT_WINS, SET_MAP, SET_STATUS } from './actions';
 
-const INITIAL_STATE: SI.Immutable<IGameState> = SI.from({
+export const INITIAL_STATE: SI.Immutable<IGameState> = SI.from({
   mapLayout: [],
   status: 'started',
   wins: 0,
@@ -12,13 +12,13 @@ const INITIAL_STATE: SI.Immutable<IGameState> = SI.from({
 
 const GameReducer = (
   state: SI.Immutable<IGameState> = INITIAL_STATE,
-  action: IGenericAction
+  action: IGenericAction | {}
 ) => {
-  switch (action.type) {
+  switch ((action as IGenericAction).type) {
     case SET_MAP:
-      return state.set("mapLayout", action.payload)
+      return state.set("mapLayout", (action as IGenericAction).payload)
     case SET_STATUS:
-      return state.set("status", action.payload)
+      return state.set("status", (action as IGenericAction).payload)
     case INCREMENT_WINS:
       return state.set("wins", state.wins + 1)
     case INCREMENT_LOSSES:

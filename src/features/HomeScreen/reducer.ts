@@ -2,9 +2,8 @@ import { SET_USER_NAME, CLEAR_ERROR, STOP_LOADING, START_LOADING, SHOW_ERROR, SE
 import { IHomeState, IUserAction } from './types';
 import * as SI from 'seamless-immutable';
 
-const INITIAL_STATE: SI.Immutable<IHomeState> = SI.from({
+export const INITIAL_STATE: SI.Immutable<IHomeState> = SI.from({
   name: '',
-  record: 0,
   error: '',
   loading: false,
   level: 1,
@@ -12,15 +11,15 @@ const INITIAL_STATE: SI.Immutable<IHomeState> = SI.from({
 
 const HomeReducer = (
   state: SI.Immutable<IHomeState> = INITIAL_STATE,
-  action: IUserAction
+  action: IUserAction | {}
 ) => {
-  switch (action.type) {
+  switch ((action as IUserAction).type) {
     case SET_USER_NAME:
-      return state.set("name", action.payload)
+      return state.set("name", (action as IUserAction).payload)
     case SET_LEVEL:
-      return state.set("level", action.payload)
+      return state.set("level", (action as IUserAction).payload)
     case SHOW_ERROR:
-      return state.set("error", action.payload)
+      return state.set("error", (action as IUserAction).payload)
     case CLEAR_ERROR:
       return state.set("error", '')
     case START_LOADING:

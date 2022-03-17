@@ -2,20 +2,11 @@ import { eventChannel } from "redux-saga";
 import { call, put, select, take, takeEvery } from "redux-saga/effects";
 import { incrementLosses, incrementWins, setMap, setStatus } from "../features/GameScreen/actions";
 import { mapLayoutSelector } from "../features/GameScreen/selectors";
-import { IMapLayout } from "../features/GameScreen/types";
 import { history } from "../lib/history";
 import { IActionName, IGenericAction, ISaga, ISocketEventAction } from "./types";
-import * as SI from 'seamless-immutable';
-
-// DEBUG
-declare global {
-  interface Window { minesocket: any; }
-}
-
-window.minesocket = window.minesocket || {};
 
 export const SOCKET_URL = "ws://hometask.eg1236.com/game1/";
-export let socket: WebSocket | null = null;
+export let GameSocket: WebSocket | null = null;
 export const SOCKET_EVENTS = {
   OPEN: 'open',
   CLOSE: 'close',
@@ -96,10 +87,8 @@ function createEventChannel(socket: any) {
 }
 
 export function* initSocketChannel(): any {
-  socket = new WebSocket(SOCKET_URL);
-  // DEBUG
-  window.minesocket = socket;
-  const channel = yield call(createEventChannel, socket);
+  GameSocket = new WebSocket(SOCKET_URL);
+  const channel = yield call(createEventChannel, GameSocket);
 
   while (true) {
     const action = yield take(channel);
@@ -110,39 +99,7 @@ export function* initSocketChannel(): any {
 // Abstraction over socket.send, to allow sagas from elsewhere to send messages to the socket
 export function* socketSend(message: string): any {
   // Avoid DOM exceptions if socket isn't ready, can implement spinners to show this later
-  if (socket?.readyState === 1) {
-    socket?.send(message);
+  if (GameSocket?.readyState === 1) {
+    GameSocket?.send(message);
   }
-}
-
-// Main function used to update our map state from the socket messages
-// This could go in its own library if it gets too big
-export function* updateMap({ payload }: ISocketEventAction): ISaga {
-  // Interpret socket messages
-  if (payload.data) {
-    if (payload.data == 'new: OK') {
-      yield socketSend("map");
-    } else if(payload.data.startsWith("open: You lose")) {
-      // yield socketSend("map");
-      yield put(setStatus('lost'));
-      yield put(incrementLosses());
-    } else if(payload.data.startsWith("open: You win")) {
-      yield put(setStatus('won'));
-      yield put(incrementWins());
-    } else if(payload.data.startsWith("map:")) {
-      const mapLayout: any = yield select(mapLayoutSelector);
-
-      // Update Map
-      yield put( setMap( payload.data.split('map:')[1] ) );
-
-      // Auto-navigate on first map load
-      if (!mapLayout || mapLayout.length <= 0) {
-        history.push('/game');
-      }
-    }
-  }
-}
-
-export function* watchMapUpdates(): ISaga {
-  yield takeEvery(WEBSOCKET_MESSAGE, updateMap);
 }

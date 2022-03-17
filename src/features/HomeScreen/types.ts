@@ -1,6 +1,5 @@
 export interface IHomeState {
   name: string;
-  record: number;
   error?: string;
   loading: boolean;
   level: number;
