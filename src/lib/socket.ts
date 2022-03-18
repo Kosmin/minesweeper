@@ -1,4 +1,4 @@
-export const SOCKET_URL = "ws://hometask.eg1236.com/game1/";
+export const SOCKET_URL = "wss://hometask.eg1236.com/game1/";
 export let GameSocket: WebSocket | null = null;
 
 export interface ISocketEvents {
