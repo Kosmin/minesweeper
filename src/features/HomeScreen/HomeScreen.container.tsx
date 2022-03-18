@@ -11,11 +11,11 @@ import Select, { SelectChangeEvent } from '@mui/material/Select';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import * as HomeActions from './actions';
-import { errorSelector, loadingSelector, userNameSelector } from './selectors';
+import { errorSelector, levelSelector, loadingSelector, userNameSelector } from './selectors';
 
 export const HomeScreen = memo(() => {
   const [tempUserName, setTempUserName] = useState('');
-  const [level, setLevel] = React.useState(1);
+  const level = useAppSelector(levelSelector);
   const error = useAppSelector(errorSelector);
   const loading = useAppSelector(loadingSelector);
   const userName = useAppSelector(userNameSelector);
@@ -30,7 +30,7 @@ export const HomeScreen = memo(() => {
   }
 
   const handleLevelChange = (event: SelectChangeEvent) => {
-    setLevel(parseInt(event.target.value, 10));
+    HomeActions.setLevel(parseInt(event.target.value, 10));
   };
 
   useEffect(() => setTempUserName(userName), [])
