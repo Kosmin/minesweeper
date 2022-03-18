@@ -1,10 +1,10 @@
 {
   "files": {
-    "main.css": "/kosmin.github.io/minesweeper/static/css/main.323ecd6d.css",
-    "main.js": "/kosmin.github.io/minesweeper/static/js/main.edf8961e.js",
-    "index.html": "/kosmin.github.io/minesweeper/index.html",
-    "main.323ecd6d.css.map": "/kosmin.github.io/minesweeper/static/css/main.323ecd6d.css.map",
-    "main.edf8961e.js.map": "/kosmin.github.io/minesweeper/static/js/main.edf8961e.js.map"
+    "main.css": "/static/css/main.323ecd6d.css",
+    "main.js": "/static/js/main.edf8961e.js",
+    "index.html": "/index.html",
+    "main.323ecd6d.css.map": "/static/css/main.323ecd6d.css.map",
+    "main.edf8961e.js.map": "/static/js/main.edf8961e.js.map"
   },
   "entrypoints": [
     "static/css/main.323ecd6d.css",
