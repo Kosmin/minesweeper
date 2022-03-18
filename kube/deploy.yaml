@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: minesweeper
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: minesweeper
+  template:
+    metadata:
+      labels:
+        app: minesweeper
+    spec:
+      containers:
+      - name: minesweeper
+        image: kosmin/liveartinterview:1.0.0
+        imagePullPolicy: IfNotPresent
+        command: ["npm", "run", "serve"]
+        resources:
+          limits:
+            memory: "512Mi"
+            cpu: "500m"
+          requests:
+            memory: "256Mi"
+            cpu: "250m"
+        ports:
+          - containerPort: 3000
+        stdin: true
+        tty: true
+        env:
+          - name: HOST
+            value: "0.0.0.0"

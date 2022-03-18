@@ -1,0 +1,5 @@
+.git
+.dockerignore
+*/secrets/*
+node_modules/
+

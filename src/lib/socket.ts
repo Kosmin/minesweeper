@@ -13,8 +13,8 @@ export function GameSocketInstance() {
   return GameSocket;
 };
 
-export function InitGameSocket() {
-  GameSocket = new WebSocket(SOCKET_URL);
+export function InitGameSocket(url = SOCKET_URL) {
+  return GameSocket = new WebSocket(url);
 };
 
 export function socketSend(message: string): void {
