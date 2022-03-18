@@ -1,7 +1,8 @@
 import { put, select, takeEvery } from "redux-saga/effects";
-import { socketSend, WEBSOCKET_MESSAGE } from "../../app/socket.sagas";
+import { WEBSOCKET_MESSAGE } from "../../app/socket.sagas";
 import { ISaga, ISocketEventAction } from "../../app/types";
 import { history } from "../../lib/history";
+import { socketSend } from "../../lib/socket";
 import { executeRestartGame } from "../HomeScreen/sagas";
 import { incrementLosses, incrementWins, MINE_CHECK, RESTART_GAME, setMap, setStatus } from "./actions";
 import { gameStatusSelector, mapLayoutSelector } from "./selectors";
@@ -14,7 +15,7 @@ export function* updateMap({ payload }: ISocketEventAction): ISaga {
   // Interpret socket messages
   if (payload.data) {
     if (payload.data === 'new: OK') {
-      yield socketSend("map");
+      socketSend("map");
     } else if(payload.data.startsWith("open: You lose")) {
       yield put(setStatus('lost'));
       yield put(incrementLosses());
@@ -38,8 +39,8 @@ export function* updateMap({ payload }: ISocketEventAction): ISaga {
 export function* mineCheckAsync(action: IMineCheckAction): ISaga {
   const status = yield select(gameStatusSelector);
   if(status === 'started') {
-    yield socketSend(`open ${action.payload.col} ${action.payload.row}`);
-    yield socketSend(`map`);
+    socketSend(`open ${action.payload.col} ${action.payload.row}`);
+    socketSend(`map`);
   }
 }
 

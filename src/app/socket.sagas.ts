@@ -1,9 +1,8 @@
 import { eventChannel } from "redux-saga";
 import { call, put, take } from "redux-saga/effects";
+import { attachSocketEvents, closeSocket, GameSocketInstance, InitGameSocket } from "../lib/socket";
 import { IActionName, IGenericAction, ISaga, ISocketEventAction } from "./types";
 
-export const SOCKET_URL = "ws://hometask.eg1236.com/game1/";
-export let GameSocket: WebSocket | null = null;
 export const SOCKET_EVENTS = {
   OPEN: 'open',
   CLOSE: 'close',
@@ -29,7 +28,7 @@ export const startSocketConnection = (): IGenericAction => ({
   type: INIT_SOCKETS_CHANNEL,
 })
 
-function* onSocketEvent({type, payload}: ISocketEventAction): ISaga {
+export function* onSocketEvent({type, payload}: ISocketEventAction): ISaga {
   if(!type){ return; }
   switch (type) {
     case SOCKET_EVENTS.OPEN:
@@ -49,54 +48,56 @@ function* onSocketEvent({type, payload}: ISocketEventAction): ISaga {
   }
 }
 
-function createEventChannel(socket: any) {
-  return eventChannel(emit => {
-    // call emit when a message is received
-    socket.onmessage = (event: MessageEvent) => {
-      emit({
-        type: SOCKET_EVENTS.MESSAGE,
-        payload: event,
-      });
-    }
+export let onmessageCallback: any,
+  onopenCallback: any,
+  oncloseCallback: any,
+  onerrorCallback: any,
+  emitter: any;
 
-    socket.onopen = () => {
-      emit({
-        type: SOCKET_EVENTS.OPEN
-      });
-    }
+export const createOnMessageCallback = (emit: any) => {
+  return onmessageCallback = (event: MessageEvent) => (
+    emit({ type: SOCKET_EVENTS.MESSAGE, payload: event })
+  )
+}
 
-    socket.onclose = () => {
-      emit({
-        type: SOCKET_EVENTS.CLOSE
-      });
-    }
+export const createOnOpenCallback = (emit: any) => {
+  return onopenCallback = () => emit({ type: SOCKET_EVENTS.OPEN });
+}
 
-    socket.onerror = (event: MessageEvent) => {
-      emit({
-        type: SOCKET_EVENTS.ERROR,
-        payload: event,
-      });
-    }
+export const createOnCloseCallback = (emit: any) => {
+  return oncloseCallback = () => emit({ type: SOCKET_EVENTS.CLOSE });
+}
 
-    // Return a function to be called when done listening
-    return () => socket.close();
+export const createOnErrorCallback = (emit: any) => {
+  return onerrorCallback = (event: Event) => (
+    emit({ type: SOCKET_EVENTS.ERROR, payload: event })
+  )
+}
+
+export function eventChannelCallback(emit: any) {
+  emitter = emit;
+  attachSocketEvents({
+    onmessage: createOnMessageCallback(emit),
+    onopen: createOnOpenCallback(emit),
+    onclose: createOnCloseCallback(emit),
+    onerror: createOnErrorCallback(emit),
   });
+
+  // Return a function to be called when done listening
+  return () => closeSocket();
+}
+
+export function createEventChannel() {
+  return eventChannel(eventChannelCallback);
 }
 
 export function* initSocketChannel(): any {
-  GameSocket = new WebSocket(SOCKET_URL);
-  const channel = yield call(createEventChannel, GameSocket);
+  let loop = true
+  InitGameSocket();
+  const channel = yield call(createEventChannel);
 
-  while (true) {
+  while (loop) {
     const action = yield take(channel);
     yield call(onSocketEvent, action);
-  }
-}
-
-// Abstraction over socket.send, to allow sagas from elsewhere to send messages to the socket
-export function* socketSend(message: string): any {
-  // Avoid DOM exceptions if socket isn't ready, can implement spinners to show this later
-  if (GameSocket?.readyState === 1) {
-    GameSocket?.send(message);
   }
 }

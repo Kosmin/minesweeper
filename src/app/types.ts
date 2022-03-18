@@ -5,7 +5,7 @@ export interface IGenericAction {
     payload?: null | string;
 }
 
-export type ISaga = Iterable<unknown>;
+export type ISaga = Generator<unknown>;
 
 export type ISocketEventType = 'open' | 'close' | 'error' | 'message';
 export interface ISocketEventAction {

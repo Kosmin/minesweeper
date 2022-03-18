@@ -9,11 +9,12 @@ import {
   stopLoading,
   setLevel
 } from './actions';
-import { startSocketConnection, WEBSOCKET_OPEN, WEBSOCKET_ERROR, INIT_SOCKETS_CHANNEL, initSocketChannel, socketSend } from '../../app/socket.sagas';
+import { startSocketConnection, WEBSOCKET_OPEN, WEBSOCKET_ERROR, INIT_SOCKETS_CHANNEL, initSocketChannel } from '../../app/socket.sagas';
 import { history } from '../../lib/history';
 import { levelSelector } from './selectors';
 import { setStatus } from '../GameScreen/actions';
 import { mapLayoutSelector } from '../GameScreen/selectors';
+import { socketSend } from '../../lib/socket';
 
 function* executeStartGame(action: IUserStartGameAction): ISaga {
   if (!action.payload.name || action.payload.name.length < 3) {
@@ -55,7 +56,7 @@ export function* showSocketError(): ISaga {
 
 export function* socketOpen(): ISaga {
   const level = yield(select(levelSelector));
-  yield socketSend(`new ${level}`);
+  socketSend(`new ${level}`);
   yield put(stopLoading());
 
   const mapLayout: any = yield select(mapLayoutSelector);
