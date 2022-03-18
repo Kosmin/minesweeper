@@ -30,7 +30,7 @@ export const HomeScreen = memo(() => {
   }
 
   const handleLevelChange = (event: SelectChangeEvent) => {
-    HomeActions.setLevel(parseInt(event.target.value, 10));
+    dispatch(HomeActions.setLevel(parseInt(event.target.value, 10)));
   };
 
   useEffect(() => setTempUserName(userName), [])
